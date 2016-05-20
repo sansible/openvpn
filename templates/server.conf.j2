@@ -1,0 +1,60 @@
+# {{ ansible_managed }}
+#jinja2:trim_blocks: False
+
+port {{ openvpn.port }}
+proto {{ openvpn.proto }}
+dev {{ openvpn.dev }}
+
+ca {{ openvpn.keydir }}/ca.crt
+cert {{ openvpn.keydir }}/server.crt
+key {{ openvpn.keydir }}/server.key
+dh {{ openvpn.keydir }}/dh{{ openvpn.key_size }}.pem
+
+persist-key
+persist-tun
+
+{% if openvpn.crl_enabled %}
+crl-verify {{ openvpn.etcdir }}/crl.pem
+{% endif %}
+
+tls-version-min {{ openvpn.tls_version_min }}
+tls-cipher {{ openvpn.tls_cipher }}
+cipher {{ openvpn.cipher }}
+auth {{ openvpn.auth }}
+
+{% if openvpn.server %}
+server {{ openvpn.server }}
+{% endif %}
+
+ifconfig-pool-persist {{ openvpn.ifconfig_pool_persist }}
+keepalive {{ openvpn.keepalive }}
+
+{% if openvpn.comp_lzo -%}
+comp-lzo
+{% endif %}
+
+status {{ openvpn.status_log }}
+log-append  {{ openvpn.log }}
+verb {{ openvpn.verb }}
+
+{% if openvpn.user -%}
+user {{ openvpn.user }}
+{% endif %}
+
+{% if openvpn.group -%}
+group {{ openvpn.group }}
+{% else -%}
+group nogroup
+{% endif %}
+
+{% if openvpn.client_to_client %}
+client-to-client
+{% endif %}
+
+{% if openvpn.subnet_add_route %}
+push "route {{ openvpn.subnet_bastion }} 255.255.0.0"
+{% endif %}
+
+{% for option in openvpn.server_extra_options %}
+{{ option }}
+{% endfor %}

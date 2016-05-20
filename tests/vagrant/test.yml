@@ -1,0 +1,19 @@
+---
+
+- name: Test AWS Openvpn role
+  hosts: all
+
+  pre_tasks:
+    - name: Update apt
+      become: yes
+      apt:
+        cache_valid_time: 1800
+        update_cache: yes
+      tags:
+        - build
+
+  roles:
+    - role: sansible.aws_openvpn
+      openvpn:
+        aws_s3_options: '--no-sign-request --endpoint-url http://localhost:8080 --no-verify-ssl'
+        aws_s3_path: s3://openvpn-test-bucket

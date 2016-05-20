@@ -1,0 +1,47 @@
+---
+
+openvpn:
+  auth: "SHA512"
+  # Used for tests
+  aws_s3_options: ""
+  aws_s3_path: no
+  # Allows for a static EIP, set to the EIP if in use
+  aws_ec2_elastic_ip: no
+  aws_region: "eu-west-1"
+  cipher: "AES-256-CBC"
+  client_to_client: no
+  comp_lzo: yes
+  # If you have a crl in S3 enable this
+  crl_enabled: no
+  dev: tun
+  etcdir: /etc/openvpn
+  group: nogroup
+  host: "{{ inventory_hostname }}"
+  ifconfig_pool_persist: ipp.txt
+  ipforwarding: yes
+  keepalive: "10 120"
+  keydir: /etc/openvpn/keys
+  key_size: 2048
+  log: /var/log/openvpn.log
+  max_clients: 100
+  port: 1194
+  proto: udp
+  resolv_retry: infinite
+  # Arbitrary lines for server config file
+  server_extra_options: []
+  # VPN server address, determines CIDR for VPN
+  server: "10.1.0.0 255.255.0.0"
+  status_log: openvpn-status.log
+  # Add a route for the private network for which the VPN is acting a bastion
+  subnet_add_route: yes
+  # Add source nat'ing so VPN clients appear to be on the private network for which the VPN is acting a bastion
+  subnet_add_snat: yes
+  # The subnet of the private network for which the VPN is acting as a bastion
+  subnet_bastion: "172.1.0.0/16"
+  # The subnet of the VPN network
+  subnet_vpn: "10.1.0.0/16"
+  tls_cipher: "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
+  tls_version_min: 1.2
+  user: nobody
+  verb: 3
+  version: "2.3.*"

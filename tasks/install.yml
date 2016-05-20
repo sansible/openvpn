@@ -1,0 +1,56 @@
+---
+
+- name: Install required packages
+  become: yes
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+  with_items:
+    - iptables-persistent
+    - python-pip
+    - python-virtualenv
+
+- name: Install required pip packages
+  become: yes
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - awscli
+
+- name: Add OpenVPN gpg key
+  become: yes
+  apt_key:
+    url: https://swupdate.openvpn.net/repos/repo-public.gpg
+    state: present
+
+- name: Install OpenVPN repo
+  become: yes
+  apt_repository:
+    repo: 'deb http://swupdate.openvpn.net/apt trusty main'
+    state: present
+
+- name: Install OpenVPN
+  become: yes
+  apt:
+    name: "openvpn={{ openvpn.version }}"
+    state: installed
+
+- name: Create OpenVPN keys directory
+  become: yes
+  file:
+    path: "{{ openvpn.keydir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Enable OpenVPN network forwarding
+  become: yes
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    sysctl_file: /etc/sysctl.conf
+    reload: yes
+  when: openvpn.ipforwarding

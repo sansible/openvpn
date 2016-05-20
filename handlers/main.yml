@@ -1,0 +1,29 @@
+---
+
+- name: save iptables
+  become: yes
+  shell: "iptables-save > /etc/iptables/rules.v4 && iptables-save > /etc/iptables/rules.v6"
+
+- name: start openvpn
+  become: yes
+  service:
+    name: openvpn
+    state: started
+
+- name: stop openvpn
+  become: yes
+  service:
+    name: openvpn
+    state: stopped
+
+- name: reload openvpn
+  become: yes
+  service:
+    name: openvpn
+    state: reloaded
+
+- name: restart openvpn
+  become: yes
+  service:
+    name: openvpn
+    state: restarted

@@ -1,0 +1,56 @@
+---
+
+- name: Gather AWS facts
+  action: ec2_facts
+  register: ec2_vars
+  when: openvpn.aws_ec2_elastic_ip
+
+- name: Associate Elastic IP
+  ec2_eip:
+    instance_id: "{{ ansible_ec2_instance_id }}"
+    ip: "{{ openvpn.aws_ec2_elastic_ip }}"
+    region: "{{ openvpn.aws_region }}"
+  when: openvpn.aws_ec2_elastic_ip
+
+- name: Download OpenVPN server keys
+  become: yes
+  command: "aws s3 cp {{ openvpn.aws_s3_options }} {{ openvpn.aws_s3_path }}/{{ item }} {{ openvpn.keydir }}"
+  args:
+    creates: "{{ openvpn.keydir }}/{{ item }}"
+  with_items:
+    - ca.crt
+    - "dh{{ openvpn.key_size }}.pem"
+    - server.crt
+    - server.key
+  notify:
+    - restart openvpn
+  when: openvpn.aws_s3_path
+
+- name: Download OpenVPN crl
+  become: yes
+  command: "aws s3 cp {{ openvpn.aws_s3_path }}/crl.pem {{ openvpn.etcdir }}"
+  notify:
+    - restart openvpn
+  when: openvpn.aws_s3_path and openvpn.crl_enabled
+
+- name: Configure OpenVPN server
+  become: yes
+  template:
+    src: server.conf.j2
+    dest: "{{ openvpn.etcdir }}/server.conf"
+  notify:
+    - restart openvpn
+
+- name: Check for OpenVPN iptable rule
+  become: yes
+  command: "iptables -t nat -C POSTROUTING -s {{ openvpn.subnet_vpn }} -o eth0 -j MASQUERADE"
+  ignore_errors: yes
+  register: snat_subnet_check
+  when: openvpn.subnet_add_snat
+
+- name: Install OpenVPN NAT iptable rule
+  become: yes
+  command: "iptables -t nat -A POSTROUTING -s {{ openvpn.subnet_vpn }} -o eth0 -j MASQUERADE"
+  when: openvpn.subnet_add_snat and snat_subnet_check.stderr != ''
+  notify:
+    - save iptables
