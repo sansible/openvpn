@@ -37,11 +37,11 @@ openvpn:
   # Add source nat'ing so VPN clients appear to be on the private network for which the VPN is acting a bastion
   subnet_add_snat: yes
   # The subnet of the private network for which the VPN is acting as a bastion
-  subnet_bastion: "172.1.0.0/16"
+  subnet_bastion: "172.1.0.0"
   # The subnet of the VPN network
   subnet_vpn: "10.1.0.0/16"
   tls_cipher: "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
   tls_version_min: 1.2
   user: nobody
   verb: 3
-  version: "2.3.*"
+  version: "2.3.10-debian0"

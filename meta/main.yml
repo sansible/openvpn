@@ -1,8 +1,10 @@
 ---
 
+dependencies: []
+
 galaxy_info:
   author: "David Reed"
-  description: "OpenVPN for AWS"
+  description: "Install OpenVPN for us with AWS bastions."
   license: MIT
   min_ansible_version: 1.9
   platforms:
@@ -11,5 +13,3 @@ galaxy_info:
         - all
   categories:
     - development
-
-dependencies: [ ]

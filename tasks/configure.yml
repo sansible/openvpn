@@ -3,14 +3,13 @@
 - name: Gather AWS facts
   action: ec2_facts
   register: ec2_vars
-  when: openvpn.aws_ec2_elastic_ip
 
 - name: Associate Elastic IP
   ec2_eip:
     instance_id: "{{ ansible_ec2_instance_id }}"
     ip: "{{ openvpn.aws_ec2_elastic_ip }}"
     region: "{{ openvpn.aws_region }}"
-  when: openvpn.aws_ec2_elastic_ip
+  when: ansible_ec2_instance_id is defined and openvpn.aws_ec2_elastic_ip
 
 - name: Download OpenVPN server keys
   become: yes
@@ -28,7 +27,7 @@
 
 - name: Download OpenVPN crl
   become: yes
-  command: "aws s3 cp {{ openvpn.aws_s3_path }}/crl.pem {{ openvpn.etcdir }}"
+  command: "aws s3 cp {{ openvpn.aws_s3_options }} {{ openvpn.aws_s3_path }}/crl.pem {{ openvpn.etcdir }}"
   notify:
     - restart openvpn
   when: openvpn.aws_s3_path and openvpn.crl_enabled
