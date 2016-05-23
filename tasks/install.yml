@@ -8,7 +8,6 @@
   with_items:
     - iptables-persistent
     - python-pip
-    - python-virtualenv
 
 - name: Install required pip packages
   become: yes
@@ -17,6 +16,7 @@
     state: present
   with_items:
     - awscli
+    - boto
 
 - name: Add OpenVPN gpg key
   become: yes

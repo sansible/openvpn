@@ -1,16 +1,14 @@
-# Elasticsearch
+# OpenVPN
 
-Master: [![Build Status](https://travis-ci.org/sansible/elasticsearch.svg?branch=master)](https://travis-ci.org/sansible/elasticsearch)  
-Develop: [![Build Status](https://travis-ci.org/sansible/elasticsearch.svg?branch=develop)](https://travis-ci.org/sansible/elasticsearch)
+Master: [![Build Status](https://travis-ci.org/sansible/openvpn.svg?branch=master)](https://travis-ci.org/sansible/openvpn)  
+Develop: [![Build Status](https://travis-ci.org/sansible/openvpn.svg?branch=develop)](https://travis-ci.org/sansible/openvpn)
 
 * [ansible.cfg](#ansible-cfg)
 * [Installation and Dependencies](#installation-and-dependencies)
 * [Tags](#tags)
 * [Examples](#examples)
 
-This roles installs Elasticsearch.
-
-For more information on Elasticsearch please visit [elastic elasticsearch](https://www.elastic.co/products/elasticsearch).
+This roles installs Openvpn.
 
 
 
@@ -30,11 +28,11 @@ hash_behaviour = merge
 
 ## Installation and Dependencies
 
-To install run `ansible-galaxy install sansible.elasticsearch` or add this to your
-`roles.yml` and `sansible.java` for installing java.
+To install run `ansible-galaxy install sansible.openvpn` or add this to your
+`roles.yml`.
 
 ```YAML
-- name: sansible.elasticsearch
+- name: sansible.openvpn
   version: v1.0
 ```
 
@@ -47,8 +45,8 @@ and run `ansible-galaxy install -p ./roles -r roles.yml`
 
 This role uses two tags: **build** and **configure**
 
-* `build` - Installs Elasticsearch and all it's dependencies.
-* `configure` - Configure and ensures that the Elasticsearch service is running.
+* `build` - Installs Openvpn and all it's dependencies.
+* `configure` - Configure and ensures that the Openvpn service is running.
 
 
 
@@ -58,40 +56,25 @@ This role uses two tags: **build** and **configure**
 To install:
 
 ```YAML
-- name: Install and configure ElasticSearch
+- name: Install and configure Openvpn
   hosts: "somehost"
 
   roles:
-    - role: sansible.elasticsearch
+    - role: sansible.openvpn
 ```
 
-With AWS EC2 plugin:
+With keys in S3 and EIP:
 
 ```YAML
-- name: Install and configure ElasticSearch
+- name: Install and configure Openvpn
   hosts: "somehost"
 
   roles:
-    - role: sansible.elasticsearch
-  elasticsearch:
-    discovery_zen_ping_multicast_enabled: false
-    index:
-      number_of_shards: 6
-      number_of_replicas: 2
-    plugins:
-      - plugin_name: mobz/elasticsearch-head
-        plugin_dir:  head
-      - plugin_name: royrusso/elasticsearch-HQ
-        plugin_dir:  HQ
-      - plugin_name: elasticsearch/elasticsearch-cloud-aws/2.4.2
-        plugin_dir: cloud-aws
-    plugin_config:
-      aws:
-        enabled: true
-        cloud_aws_region: "eu-west-1"
-        discovery:
-          enabled: true
-          ec2_tags:
-            Stack: "services-dev-elasticsearch-v2"
-          ec2_ping_timeout: "30s"
+    - role: sansible.openvpn
+      openvpn:
+        aws_s3_path: "s3://secrets/vpn"
+        aws_ec2_elastic_ip: "52.14.28.119"
+        server: "10.1.0.0 255.255.0.0"
+        subnet_bastion: "172.1.0.0"
+        subnet_vpn: "10.1.0.0/16"
 ```
