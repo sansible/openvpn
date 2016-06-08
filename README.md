@@ -74,7 +74,7 @@ With keys in S3 and EIP:
       openvpn:
         aws_s3_path: "s3://secrets/vpn"
         aws_ec2_elastic_ip: "52.14.28.119"
-        server: "10.1.0.0 255.255.0.0"
-        subnet_bastion: "172.1.0.0"
-        subnet_vpn: "10.1.0.0/16"
+        bastion_route_subnet: "172.1.0.0 255.255.0.0"
+        subnet_mask: "10.1.0.0 255.255.0.0"
+        subnet: "10.1.0.0/16"
 ```
