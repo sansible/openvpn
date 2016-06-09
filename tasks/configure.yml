@@ -42,14 +42,14 @@
 
 - name: Check for OpenVPN iptable rule
   become: yes
-  command: "iptables -t nat -C POSTROUTING -s {{ openvpn.subnet_vpn }} -o eth0 -j MASQUERADE"
+  command: "iptables -t nat -C POSTROUTING -s {{ openvpn.subnet }} -o eth0 -j MASQUERADE"
   ignore_errors: yes
   register: snat_subnet_check
   when: openvpn.subnet_add_snat
 
 - name: Install OpenVPN NAT iptable rule
   become: yes
-  command: "iptables -t nat -A POSTROUTING -s {{ openvpn.subnet_vpn }} -o eth0 -j MASQUERADE"
+  command: "iptables -t nat -A POSTROUTING -s {{ openvpn.subnet }} -o eth0 -j MASQUERADE"
   when: openvpn.subnet_add_snat and snat_subnet_check.stderr != ''
   notify:
     - save iptables
