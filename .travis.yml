@@ -36,3 +36,6 @@ script:
     || (echo 'Idempotence test: fail' && exit 1)
   # Test the "configure" stage
   - ansible-playbook -i inventory test.yml --tags=configure --connection=local
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
