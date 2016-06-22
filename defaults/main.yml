@@ -8,9 +8,9 @@ openvpn:
   # Allows for a static EIP, set to the EIP if in use
   aws_ec2_elastic_ip: no
   aws_region: "eu-west-1"
-  # The subnet plus mask of the private network 
+  # The subnet plus mask of the private network
   # for which the VPN is acting as a bastion
-  bastion_route_subnet: "172.1.0.0 255.255.0.0"
+  bastion_route_subnet: "172.1.0.0/16"
   cipher: "AES-256-CBC"
   client_to_client: no
   comp_lzo: yes
@@ -39,8 +39,6 @@ openvpn:
   subnet_add_route: yes
   # Add source nat'ing so VPN clients appear to be on the private network for which the VPN is acting a bastion
   subnet_add_snat: yes
-  # VPN server address with full mask
-  subnet_mask: "10.1.0.0 255.255.0.0"
   tls_cipher: "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256:TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256"
   tls_version_min: 1.2
   user: nobody

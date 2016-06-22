@@ -1,6 +1,6 @@
 # OpenVPN
 
-Master: [![Build Status](https://travis-ci.org/sansible/openvpn.svg?branch=master)](https://travis-ci.org/sansible/openvpn)  
+Master: [![Build Status](https://travis-ci.org/sansible/openvpn.svg?branch=master)](https://travis-ci.org/sansible/openvpn)
 Develop: [![Build Status](https://travis-ci.org/sansible/openvpn.svg?branch=develop)](https://travis-ci.org/sansible/openvpn)
 
 * [ansible.cfg](#ansible-cfg)
@@ -74,7 +74,6 @@ With keys in S3 and EIP:
       openvpn:
         aws_s3_path: "s3://secrets/vpn"
         aws_ec2_elastic_ip: "52.14.28.119"
-        bastion_route_subnet: "172.1.0.0 255.255.0.0"
-        subnet_mask: "10.1.0.0 255.255.0.0"
+        bastion_route_subnet: "172.1.0.0/16"
         subnet: "10.1.0.0/16"
 ```

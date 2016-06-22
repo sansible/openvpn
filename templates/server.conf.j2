@@ -22,8 +22,8 @@ tls-cipher {{ openvpn.tls_cipher }}
 cipher {{ openvpn.cipher }}
 auth {{ openvpn.auth }}
 
-{% if openvpn.subnet_mask %}
-server {{ openvpn.subnet_mask }}
+{% if openvpn.subnet %}
+server {{ openvpn.subnet | ipaddr('network') }} {{ openvpn.subnet | ipaddr('netmask') }}
 {% endif %}
 
 ifconfig-pool-persist {{ openvpn.ifconfig_pool_persist }}
@@ -52,7 +52,7 @@ client-to-client
 {% endif %}
 
 {% if openvpn.subnet_add_route %}
-push "route {{ openvpn.bastion_route_subnet }}"
+push "route {{ openvpn.bastion_route_subnet | ipaddr('network') }} {{ openvpn.bastion_route_subnet | ipaddr('netmask') }}"
 {% endif %}
 
 {% for option in openvpn.server_extra_options %}

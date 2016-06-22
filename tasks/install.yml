@@ -17,6 +17,7 @@
   with_items:
     - awscli
     - boto
+    - netaddr
 
 - name: Add OpenVPN gpg key
   become: yes
