@@ -25,6 +25,13 @@
     - restart openvpn
   when: openvpn.aws_s3_path
 
+- name: Download OpenVPN shared authentication key
+  become: yes
+  command: "aws s3 cp --region {{ openvpn.aws_region }} {{ openvpn.aws_s3_options }} {{ openvpn.aws_s3_path }}/ta.key {{ openvpn.keydir }}"
+  notify:
+    - restart openvpn
+  when: openvpn.aws_s3_path and openvpn.tls_auth_enabled
+
 - name: Download OpenVPN crl
   become: yes
   command: "aws s3 cp --region {{ openvpn.aws_region }} {{ openvpn.aws_s3_options }} {{ openvpn.aws_s3_path }}/crl.pem {{ openvpn.etcdir }}"

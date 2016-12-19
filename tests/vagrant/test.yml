@@ -16,3 +16,4 @@
       openvpn:
         aws_s3_options: '--no-sign-request --endpoint-url http://localhost:8080 --no-verify-ssl'
         aws_s3_path: s3://openvpn-test-bucket
+        tls_auth_enabled: no
