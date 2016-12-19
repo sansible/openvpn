@@ -10,6 +10,11 @@ cert {{ openvpn.keydir }}/server.crt
 key {{ openvpn.keydir }}/server.key
 dh {{ openvpn.keydir }}/dh{{ openvpn.key_size }}.pem
 
+{% if openvpn.tls_auth_enabled %}
+tls-auth {{ openvpn.keydir }}/ta.key
+key-direction 0
+{% endif %}
+
 persist-key
 persist-tun
 
