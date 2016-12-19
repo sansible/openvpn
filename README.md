@@ -76,4 +76,5 @@ With keys in S3 and EIP:
         aws_ec2_elastic_ip: "52.14.28.119"
         bastion_route_subnet: "172.1.0.0/16"
         subnet: "10.1.0.0/16"
+        tls_auth_enabled: yes
 ```
