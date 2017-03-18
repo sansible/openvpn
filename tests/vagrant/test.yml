@@ -12,7 +12,7 @@
         - build
 
   roles:
-    - role: sansible.aws_openvpn
+    - role: sansible.openvpn
       openvpn:
         aws_s3_options: '--no-sign-request --endpoint-url http://localhost:8080 --no-verify-ssl'
         aws_s3_path: s3://openvpn-test-bucket
