@@ -3,6 +3,7 @@
 - name: Gather AWS facts
   action: ec2_facts
   register: ec2_vars
+  when: openvpn.aws_ec2_elastic_ip
 
 - name: Associate Elastic IP
   ec2_eip:
@@ -50,6 +51,7 @@
 - name: Check for OpenVPN iptable rule
   become: yes
   command: "iptables -t nat -C POSTROUTING -s {{ openvpn.subnet }} -o eth0 -j MASQUERADE"
+  changed_when: false
   ignore_errors: yes
   register: snat_subnet_check
   when: openvpn.subnet_add_snat
