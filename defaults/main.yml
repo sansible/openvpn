@@ -45,4 +45,4 @@ openvpn:
   tls_version_min: 1.2
   user: nobody
   verb: 3
-  version: "2.3.*"
+  version: "2.4.*"
