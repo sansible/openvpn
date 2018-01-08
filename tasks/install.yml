@@ -43,8 +43,8 @@
   file:
     path: "{{ openvpn.keydir }}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ openvpn.user | default ('root') }}"
+    group: "{{ openvpn.group | default ('root') }}"
     mode: 0600
 
 - name: Enable OpenVPN network forwarding
