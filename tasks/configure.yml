@@ -40,6 +40,15 @@
     - restart openvpn
   when: openvpn.aws_s3_path and openvpn.crl_enabled
 
+- name: Change recursively ownership of OpenVPN keys directory
+  become: yes
+  file:
+    path: "{{ openvpn.keydir }}"
+    state: directory
+    recurse: yes
+    owner: "{{ openvpn.user | default ('root') }}"
+    group: "{{ openvpn.group | default ('root') }}"
+
 - name: Configure OpenVPN server
   become: yes
   template:
