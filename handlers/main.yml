@@ -2,7 +2,7 @@
 
 - name: save iptables
   become: yes
-  shell: "iptables-save > /etc/iptables/rules.v4 && iptables-save > /etc/iptables/rules.v6"
+  shell: "iptables-save > /etc/iptables/rules.v4 && ip6tables-save > /etc/iptables/rules.v6"
 
 - name: start openvpn
   become: yes
